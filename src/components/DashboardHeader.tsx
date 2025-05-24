@@ -35,7 +35,59 @@ export const DashboardHeader: React.FC<Props> = ({ userProfile, timeContent }) =
           <View style={styles.timeContentOuterContainer}>
             <View style={styles.timeContentInnerContainer}>
               <Text style={styles.timeTitle}>{timeContent.title}</Text>
-              <Text style={styles.timeContent}>{timeContent.content}</Text>
+              {/* Display new structured content based on period */}
+              {timeContent.morningDetails && (
+                <View style={styles.periodDetailsContainer}>
+                  <Text style={styles.detailItem}>
+                    <Text style={styles.detailLabel}>Overall Score: </Text>
+                    {timeContent.morningDetails.overallCosmicScoreText}
+                  </Text>
+                  <Text style={styles.detailItem}>
+                    <Text style={styles.detailLabel}>Moon Mood: </Text>
+                    {timeContent.morningDetails.moonMood}
+                  </Text>
+                  <Text style={styles.detailItem}>
+                    <Text style={styles.detailLabel}>Key Opportunity: </Text>
+                    {timeContent.morningDetails.keyOpportunity}
+                  </Text>
+                  <Text style={styles.detailItem}>
+                    <Text style={styles.detailLabel}>Watch For: </Text>
+                    {timeContent.morningDetails.oneThingToWatchFor}
+                  </Text>
+                </View>
+              )}
+              {timeContent.afternoonDetails && (
+                <View style={styles.periodDetailsContainer}>
+                  <Text style={styles.detailItem}>
+                    <Text style={styles.detailLabel}>Moon Status: </Text>
+                    {timeContent.afternoonDetails.moonChangeStatus}
+                  </Text>
+                  <Text style={styles.detailItem}>
+                    <Text style={styles.detailLabel}>Evening Preview: </Text>
+                    {timeContent.afternoonDetails.eveningEnergyPreview}
+                  </Text>
+                  <Text style={styles.detailItem}>
+                    <Text style={styles.detailLabel}>Best Window: </Text>
+                    {timeContent.afternoonDetails.bestTimeWindow}
+                  </Text>
+                </View>
+              )}
+              {timeContent.eveningDetails && (
+                <View style={styles.periodDetailsContainer}>
+                  <Text style={styles.detailItem}>
+                    <Text style={styles.detailLabel}>Tomorrow's Score: </Text>
+                    {timeContent.eveningDetails.tomorrowsCosmicScoreText}
+                  </Text>
+                  <Text style={styles.detailItem}>
+                    <Text style={styles.detailLabel}>Moon Overnight: </Text>
+                    {timeContent.eveningDetails.moonMovementOvernight}
+                  </Text>
+                  <Text style={styles.detailItem}>
+                    <Text style={styles.detailLabel}>Rest: </Text>
+                    {timeContent.eveningDetails.restRecommendation}
+                  </Text>
+                </View>
+              )}
             </View>
           </View>
 
@@ -101,6 +153,20 @@ const dynamicStyles = (theme: MD3Theme) => StyleSheet.create({
     color: 'rgba(229, 229, 231, 0.9)',
     lineHeight: 22,
     fontFamily: theme.fonts.bodyLarge.fontFamily, // Example, adjust as needed
+  },
+  periodDetailsContainer: {
+    marginTop: 8,
+  },
+  detailItem: {
+    fontSize: 15,
+    color: 'rgba(229, 229, 231, 0.9)',
+    lineHeight: 22,
+    fontFamily: theme.fonts.bodyLarge.fontFamily,
+    marginBottom: 4,
+  },
+  detailLabel: {
+    fontWeight: '600',
+    color: 'rgba(229, 229, 231, 1)',
   },
   affirmationContainer: {
     marginTop: 0, // Adjusted from original header

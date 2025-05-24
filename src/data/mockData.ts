@@ -38,10 +38,31 @@ export interface TransitAlert {
   advice: string;
 }
 
+// New interfaces for structured time-based content
+interface MorningContentDetails {
+  overallCosmicScoreText: string; 
+  moonMood: string; 
+  keyOpportunity: string;
+  oneThingToWatchFor: string;
+}
+interface AfternoonContentDetails {
+  moonChangeStatus: string; 
+  eveningEnergyPreview: string;
+  bestTimeWindow: string; 
+}
+interface EveningContentDetails {
+  tomorrowsCosmicScoreText: string; 
+  moonMovementOvernight: string;
+  restRecommendation: string;
+}
+
 export interface TimeBasedContent {
   period: 'morning' | 'afternoon' | 'evening';
-  title: string;
-  content: string;
+  title: string; 
+  // Removed old 'content' field, replaced by period-specific details
+  morningDetails?: MorningContentDetails;
+  afternoonDetails?: AfternoonContentDetails;
+  eveningDetails?: EveningContentDetails;
   affirmation: string;
 }
 
@@ -209,15 +230,15 @@ export const generateTransitAlerts = (): TransitAlert[] => {
       id: '3',
       emoji: '🌟',
       title: 'Jupiter supports your Sun',
-      description: 'Opportunities and expansion available',
+      description: 'Opportunities knocking! Expansion available',
       impact: 'positive' as const,
       advice: 'Say yes to new opportunities',
     },
     {
       id: '4',
       emoji: '🪐',
-      title: 'Saturn squares your Moon',
-      description: 'Emotional responsibilities weigh heavy',
+      title: 'Saturn creates tension with your Moon',
+      description: 'Emotional responsibilities may feel heavy',
       impact: 'challenging' as const,
       advice: 'Set boundaries and practice self-care',
     },
@@ -238,27 +259,43 @@ export const generateTransitAlerts = (): TransitAlert[] => {
 
 export const getTimeBasedContent = (): TimeBasedContent => {
   const hour = new Date().getHours();
-  
-  if (hour >= 6 && hour < 12) {
+  // Mock data - in a real app, these would be dynamically generated
+  const mockCosmicScore = generateCosmicScore();
+  const mockMoonData = generateMoonData();
+
+  if (hour >= 6 && hour < 12) { // Morning
     return {
       period: 'morning',
       title: 'Your Day Ahead',
-      content: 'The morning brings fresh cosmic energy. Set your intentions and align with the universe.',
-      affirmation: 'I am open to the abundance the universe offers today',
+      morningDetails: {
+        overallCosmicScoreText: `${mockCosmicScore.score}/${mockCosmicScore.maxScore} - ${mockCosmicScore.description}`,
+        moonMood: mockMoonData.mood,
+        keyOpportunity: 'Networking could bring fruitful connections.',
+        oneThingToWatchFor: 'Avoid impulsive spending early in the day.',
+      },
+      affirmation: 'I embrace the opportunities this morning brings.',
     };
-  } else if (hour >= 12 && hour < 18) {
+  } else if (hour >= 12 && hour < 18) { // Afternoon
     return {
       period: 'afternoon',
       title: 'Afternoon Shift',
-      content: 'Energy shifts as the sun moves through the sky. Adjust your focus accordingly.',
-      affirmation: 'I flow with the cosmic rhythms of the day',
+      afternoonDetails: {
+        moonChangeStatus: `Moon remains in ${mockMoonData.sign} through the afternoon.`,
+        eveningEnergyPreview: 'Evening energy will be ideal for creative pursuits.',
+        bestTimeWindow: 'Focus on important tasks between 2-4 PM.',
+      },
+      affirmation: 'I adapt gracefully to the day\'s evolving energies.',
     };
-  } else {
+  } else { // Evening
     return {
       period: 'evening',
       title: 'Evening Reflection',
-      content: 'As the day winds down, the cosmos invite introspection and rest.',
-      affirmation: 'I release today with gratitude and welcome peaceful rest',
+      eveningDetails: {
+        tomorrowsCosmicScoreText: 'Tomorrow forecast: Mostly Clear (4/5)', // Placeholder
+        moonMovementOvernight: 'Moon will transition to Virgo overnight, plan for practical tasks.',
+        restRecommendation: 'Ensure a peaceful wind-down for optimal rejuvenation.',
+      },
+      affirmation: 'I am grateful for today and welcome restful sleep.',
     };
   }
 };
