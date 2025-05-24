@@ -18,6 +18,7 @@ import { MoonTracker } from '../components/MoonTracker';
 import { LifeAreaFocus } from '../components/LifeAreaFocus';
 import { TransitAlerts } from '../components/TransitAlerts';
 import WeeklyPreviewModal from '../components/WeeklyPreviewModal';
+import RetrogradeStatus from '../components/RetrogradeStatus';
 
 // Data
 import {
@@ -29,6 +30,8 @@ import {
   mockUserProfile,
   AstroWeeklyForecast as AstroWeeklyForecastType,
   generateAstroWeeklyForecast,
+  RetrogradePlanetInfo as RetrogradePlanetInfoType,
+  generateRetrogradeInfo,
 } from '../data/mockData';
 
 import { cosmicGradients } from '../theme/theme';
@@ -51,6 +54,9 @@ export const HomeScreen: React.FC = () => {
   const [astroWeeklyForecast, setAstroWeeklyForecast] = useState<AstroWeeklyForecastType | null>(null);
   const [isWeeklyModalVisible, setIsWeeklyModalVisible] = useState(false);
 
+  // State for Retrograde Status
+  const [retrogradeInfo, setRetrogradeInfo] = useState<RetrogradePlanetInfoType[]>([]);
+
   const refreshData = useCallback(() => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     setCosmicScore(generateCosmicScore());
@@ -59,6 +65,7 @@ export const HomeScreen: React.FC = () => {
     setTransitAlerts(generateTransitAlerts());
     setTimeContent(getTimeBasedContent());
     setAstroWeeklyForecast(generateAstroWeeklyForecast());
+    setRetrogradeInfo(generateRetrogradeInfo());
   }, []);
 
   const onRefresh = useCallback(async () => {
@@ -75,6 +82,8 @@ export const HomeScreen: React.FC = () => {
 
     // Load initial weekly forecast data
     setAstroWeeklyForecast(generateAstroWeeklyForecast());
+    // Load initial retrograde info
+    setRetrogradeInfo(generateRetrogradeInfo());
 
     return () => {
       clearInterval(hourlyInterval);
@@ -141,6 +150,9 @@ export const HomeScreen: React.FC = () => {
 
             {/* Transit Alerts */}
             <TransitAlerts data={transitAlerts} />
+
+            {/* Retrograde Status - New Component */}
+            <RetrogradeStatus data={retrogradeInfo} />
 
             {/* Bottom Spacing */}
             <View style={styles.bottomSpacing} />

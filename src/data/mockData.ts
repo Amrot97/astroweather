@@ -496,3 +496,80 @@ export const generateAstroWeeklyForecast = (): AstroWeeklyForecast => {
 };
 
 // --- END: New Data Structures and Generator for Comprehensive Weekly Forecast ---
+
+// --- START: Data Structures and Generator for Retrograde Tracker ---
+
+export interface RetrogradePlanetInfo {
+  id: string;
+  planetName: string;
+  astrologicalSymbol: string; // e.g., ☿ for Mercury
+  isRetrograde: boolean;
+  statusText: string; // "Currently Retrograde" or "Currently Direct"
+  datesLabel?: string; // "Retrograde Period:" or "Direct Since:"
+  datesValue?: string; // e.g., "Oct 25 - Nov 15" or "Aug 10"
+  interpretation?: string; // User-friendly advice if retrograde
+}
+
+export const generateRetrogradeInfo = (): RetrogradePlanetInfo[] => {
+  const planets = [
+    { name: 'Mercury', symbol: '☿' },
+    { name: 'Venus', symbol: '♀️' },
+    { name: 'Mars', symbol: '♂️' },
+    { name: 'Jupiter', symbol: '♃' },
+    { name: 'Saturn', symbol: '♄' },
+  ];
+
+  const today = new Date();
+
+  return planets.map((planet, index) => {
+    const isRetro = Math.random() < 0.3; // Approx 30% chance of being retrograde for mock
+    let interpretationText, datesLabelText, datesValueText, statusText;
+
+    if (isRetro) {
+      const startDate = addDays(today, -(Math.floor(Math.random() * 30) + 5)); // Started 5-35 days ago
+      const endDate = addDays(today, Math.floor(Math.random() * 40) + 10); // Ends in 10-50 days
+      datesLabelText = 'Retrograde Period:';
+      datesValueText = `${format(startDate, 'MMM d')} - ${format(endDate, 'MMM d')}`;
+      statusText = 'Currently Retrograde';
+
+      switch (planet.name) {
+        case 'Mercury':
+          interpretationText = 'Review communications, travel, and tech. Double-check details. Good for reflection.';
+          break;
+        case 'Venus':
+          interpretationText = 'Re-evaluate relationships, values, and finances. Old connections may reappear.';
+          break;
+        case 'Mars':
+          interpretationText = 'Energy may be lower or turned inward. Review motivations before acting. Avoid new conflicts.';
+          break;
+        case 'Jupiter':
+          interpretationText = 'Review your beliefs and growth areas. Inner expansion over outer pushes.';
+          break;
+        case 'Saturn':
+          interpretationText = 'Re-assess responsibilities, boundaries, and long-term plans. Karmic lessons may surface.';
+          break;
+        default:
+          interpretationText = 'A period for review and re-assessment related to this planet\'s themes.';
+      }
+    } else {
+      const directSinceDate = addDays(today, -(Math.floor(Math.random() * 60) + 10)); // Went direct 10-70 days ago
+      datesLabelText = 'Direct Since:';
+      datesValueText = format(directSinceDate, 'MMM d');
+      statusText = 'Currently Direct';
+      interpretationText = undefined; // No specific interpretation needed if direct for this MVP
+    }
+
+    return {
+      id: `retro-${planet.name.toLowerCase()}`,
+      planetName: planet.name,
+      astrologicalSymbol: planet.symbol,
+      isRetrograde: isRetro,
+      statusText: statusText,
+      datesLabel: datesLabelText,
+      datesValue: datesValueText,
+      interpretation: interpretationText,
+    };
+  });
+};
+
+// --- END: Data Structures and Generator for Retrograde Tracker ---
