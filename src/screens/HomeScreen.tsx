@@ -17,7 +17,7 @@ import { CosmicScore } from '../components/CosmicScore';
 import { MoonTracker } from '../components/MoonTracker';
 import { LifeAreaFocus } from '../components/LifeAreaFocus';
 import { TransitAlerts } from '../components/TransitAlerts';
-import { WeeklyPreviewModal } from '../components/WeeklyPreviewModal';
+import WeeklyPreviewModal from '../components/WeeklyPreviewModal';
 
 // Data
 import {
