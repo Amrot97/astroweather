@@ -132,7 +132,7 @@ const dynamicStyles = (theme: MD3Theme) => StyleSheet.create({
     fontFamily: theme.fonts.bodyMedium.fontFamily, // Example, adjust as needed
   },
   timeContentOuterContainer: {
-    backgroundColor: 'rgba(255, 255, 255, 0.08)', // Subtle background for this section
+    backgroundColor: 'rgba(160, 64, 179, 0.25)', // Updated: Lighter translucent purple
     borderRadius: 12,
     padding: 16,
     width: '100%',
@@ -169,8 +169,8 @@ const dynamicStyles = (theme: MD3Theme) => StyleSheet.create({
     color: 'rgba(229, 229, 231, 1)',
   },
   affirmationContainer: {
-    marginTop: 0, // Adjusted from original header
-    backgroundColor: 'rgba(0, 0, 0, 0.2)',
+    marginTop: 0, 
+    backgroundColor: 'rgba(90, 0, 125, 0.35)', // Updated: Darker translucent purple
     borderRadius: 12,
     paddingVertical: 12,
     paddingHorizontal: 16,
