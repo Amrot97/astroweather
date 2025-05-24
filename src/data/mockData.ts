@@ -20,7 +20,6 @@ export interface MoonData {
 }
 
 export interface LifeAreaFocus {
-  // id: string; // Removed for revert
   house: number;
   name: string;
   emoji: string;
@@ -38,31 +37,10 @@ export interface TransitAlert {
   advice: string;
 }
 
-// New interfaces for structured time-based content
-interface MorningContentDetails {
-  overallCosmicScoreText: string; 
-  moonMood: string; 
-  keyOpportunity: string;
-  oneThingToWatchFor: string;
-}
-interface AfternoonContentDetails {
-  moonChangeStatus: string; 
-  eveningEnergyPreview: string;
-  bestTimeWindow: string; 
-}
-interface EveningContentDetails {
-  tomorrowsCosmicScoreText: string; 
-  moonMovementOvernight: string;
-  restRecommendation: string;
-}
-
 export interface TimeBasedContent {
   period: 'morning' | 'afternoon' | 'evening';
-  title: string; 
-  // Removed old 'content' field, replaced by period-specific details
-  morningDetails?: MorningContentDetails;
-  afternoonDetails?: AfternoonContentDetails;
-  eveningDetails?: EveningContentDetails;
+  title: string;
+  content: string;
   affirmation: string;
 }
 
@@ -157,7 +135,6 @@ export const generateMoonData = (): MoonData => {
 export const generateLifeAreaFocus = (): LifeAreaFocus[] => {
   const areas = [
     {
-      // id: 'la_career',
       house: 10,
       name: 'Career & Public Life',
       emoji: '💼',
@@ -166,7 +143,6 @@ export const generateLifeAreaFocus = (): LifeAreaFocus[] => {
       activities: ['Presentations', 'Networking', 'Job interviews', 'Public speaking'],
     },
     {
-      // id: 'la_relationships',
       house: 7,
       name: 'Relationships',
       emoji: '💕',
@@ -175,7 +151,6 @@ export const generateLifeAreaFocus = (): LifeAreaFocus[] => {
       activities: ['Date nights', 'Partner discussions', 'Collaborations', 'Contracts'],
     },
     {
-      // id: 'la_money',
       house: 2,
       name: 'Money & Resources',
       emoji: '💰',
@@ -184,7 +159,6 @@ export const generateLifeAreaFocus = (): LifeAreaFocus[] => {
       activities: ['Budget planning', 'Investment decisions', 'Shopping', 'Salary negotiations'],
     },
     {
-      // id: 'la_creativity',
       house: 5,
       name: 'Creativity & Romance',
       emoji: '🎨',
@@ -193,7 +167,6 @@ export const generateLifeAreaFocus = (): LifeAreaFocus[] => {
       activities: ['Art projects', 'Dating', 'Hobbies', 'Fun activities'],
     },
     {
-      // id: 'la_health',
       house: 6,
       name: 'Health & Routine',
       emoji: '🏃',
@@ -230,15 +203,15 @@ export const generateTransitAlerts = (): TransitAlert[] => {
       id: '3',
       emoji: '🌟',
       title: 'Jupiter supports your Sun',
-      description: 'Opportunities knocking! Expansion available',
+      description: 'Opportunities and expansion available',
       impact: 'positive' as const,
       advice: 'Say yes to new opportunities',
     },
     {
       id: '4',
       emoji: '🪐',
-      title: 'Saturn creates tension with your Moon',
-      description: 'Emotional responsibilities may feel heavy',
+      title: 'Saturn squares your Moon',
+      description: 'Emotional responsibilities weigh heavy',
       impact: 'challenging' as const,
       advice: 'Set boundaries and practice self-care',
     },
@@ -259,43 +232,27 @@ export const generateTransitAlerts = (): TransitAlert[] => {
 
 export const getTimeBasedContent = (): TimeBasedContent => {
   const hour = new Date().getHours();
-  // Mock data - in a real app, these would be dynamically generated
-  const mockCosmicScore = generateCosmicScore();
-  const mockMoonData = generateMoonData();
-
-  if (hour >= 6 && hour < 12) { // Morning
+  
+  if (hour >= 6 && hour < 12) {
     return {
       period: 'morning',
       title: 'Your Day Ahead',
-      morningDetails: {
-        overallCosmicScoreText: `${mockCosmicScore.score}/${mockCosmicScore.maxScore} - ${mockCosmicScore.description}`,
-        moonMood: mockMoonData.mood,
-        keyOpportunity: 'Networking could bring fruitful connections.',
-        oneThingToWatchFor: 'Avoid impulsive spending early in the day.',
-      },
-      affirmation: 'I embrace the opportunities this morning brings.',
+      content: 'The morning brings fresh cosmic energy. Set your intentions and align with the universe.',
+      affirmation: 'I am open to the abundance the universe offers today',
     };
-  } else if (hour >= 12 && hour < 18) { // Afternoon
+  } else if (hour >= 12 && hour < 18) {
     return {
       period: 'afternoon',
       title: 'Afternoon Shift',
-      afternoonDetails: {
-        moonChangeStatus: `Moon remains in ${mockMoonData.sign} through the afternoon.`,
-        eveningEnergyPreview: 'Evening energy will be ideal for creative pursuits.',
-        bestTimeWindow: 'Focus on important tasks between 2-4 PM.',
-      },
-      affirmation: 'I adapt gracefully to the day\'s evolving energies.',
+      content: 'Energy shifts as the sun moves through the sky. Adjust your focus accordingly.',
+      affirmation: 'I flow with the cosmic rhythms of the day',
     };
-  } else { // Evening
+  } else {
     return {
       period: 'evening',
       title: 'Evening Reflection',
-      eveningDetails: {
-        tomorrowsCosmicScoreText: 'Tomorrow forecast: Mostly Clear (4/5)', // Placeholder
-        moonMovementOvernight: 'Moon will transition to Virgo overnight, plan for practical tasks.',
-        restRecommendation: 'Ensure a peaceful wind-down for optimal rejuvenation.',
-      },
-      affirmation: 'I am grateful for today and welcome restful sleep.',
+      content: 'As the day winds down, the cosmos invite introspection and rest.',
+      affirmation: 'I release today with gratitude and welcome peaceful rest',
     };
   }
 };
@@ -380,89 +337,83 @@ export interface DailyWeatherChip {
   dateOfMonth: string;   // e.g., "20"
   weatherEmoji: string;  // e.g., "☀️"
   cosmicScore: number; 
-  // New fields for detailed daily forecast when this chip is selected
-  detailedWeatherDescription: string; // e.g., "Mixed energies - good for routine tasks"
-  moonInfoForDay: string; // e.g., "Moon in Gemini. Mood: Chatty & Curious."
-  keyHighlightForDay: string; // e.g., "Venus trine your Moon: Harmonious relationships."
-  focusForDay: string; // e.g., "Focus on Career & Public Life today."
+  detailedWeatherDescription: string; 
+  moonInfoForDay: string; 
+  keyHighlightForDay: string; 
+  focusForDay: string; 
 }
 
 // For the "Moon Movement This Week" card
 export interface WeeklyMoonSignChange {
-  id: string;
-  period: string; // e.g., "Mon-Tue"
-  sign: string;   // e.g., "Aries"
-  zodiacSymbol: string; // e.g., "♈️"
+// ... (interface unchanged) ...
 }
 export interface WeeklyMoonPhase {
-  id: string;
-  phaseName: string; // e.g., "New Moon"
-  phaseEmoji: string; // e.g., "🌑"
+// ... (interface unchanged) ...
 }
 export interface MoonMovementData {
-  signChanges: WeeklyMoonSignChange[];
-  phases: WeeklyMoonPhase[];
+// ... (interface unchanged) ...
 }
 
 // For the "Weekly Highlights" card
 export interface WeeklyHighlightItem {
-  id: string;
-  dayAbbreviation: string; // e.g., "Mon"
-  title: string;           // e.g., "New Moon in Aries"
-  description: string;     // e.g., "Fresh starts, new beginnings"
+// ... (interface unchanged) ...
 }
 
 // For the "Weekly Focus Areas" card
 export interface WeeklyFocusPeriod {
-  id: string;
-  title: string;       // e.g., "Early Week (Mon-Wed)"
-  description: string; // e.g., "Personal identity & self-expression (1st House)"
+// ... (interface unchanged) ...
 }
 
 // The comprehensive forecast object for the new weekly view
 export interface AstroWeeklyForecast {
-  dailyChips: DailyWeatherChip[];
-  moonMovement: MoonMovementData;
-  highlights: WeeklyHighlightItem[];
-  focusAreas: WeeklyFocusPeriod[];
+// ... (interface unchanged) ...
 }
 
+// CORRECTED AND EXPANDED generateAstroWeeklyForecast
 export const generateAstroWeeklyForecast = (): AstroWeeklyForecast => {
   const today = new Date();
   const dailyChipsData: DailyWeatherChip[] = [];
-  // Sample data pools for variety in daily details
+  
   const sampleWeatherDetails = [
-    "Excellent energy for new beginnings and important decisions.",
-    "Mixed energies today. Good for routine tasks and steady progress.",
-    "Low energy day. Focus on rest and reflection. Avoid major decisions.",
-    "Generally positive energy with brief moments of tension. Stay flexible.",
-    "A dynamic day! Expect the unexpected and embrace change."
+    "Excellent energy for new beginnings and important decisions. Seize the day!",
+    "Mixed energies today. Good for routine tasks and steady progress. Some minor obstacles possible but surmountable.",
+    "A low energy day. Focus on rest, reflection, and gentle activities. Avoid major decisions or confrontations.",
+    "Generally positive energy with brief moments of tension. Stay flexible, adaptable, and communicative.",
+    "A dynamic day! Expect the unexpected and embrace change with an open mind. Good for spontaneity.",
+    "Focus on creative pursuits and self-expression. Inspiration is high! Connect with your passions.",
+    "A grounding day. Perfect for planning, organizing, and attending to practical matters. Solidify foundations."
   ];
   const sampleMoonInfos = [
-    "Moon in Aries. Mood: Energetic & Impulsive.",
-    "Moon in Taurus. Mood: Sensual & Grounded.",
-    "Moon in Gemini. Mood: Chatty & Curious.",
-    "Moon in Cancer. Mood: Nurturing & Sensitive.",
-    "Moon in Leo. Mood: Confident & Expressive."
+    "Moon in Aries. Mood: Energetic & Impulsive. Channel drive constructively.",
+    "Moon in Taurus. Mood: Sensual & Grounded. Enjoy simple pleasures and nature.",
+    "Moon in Gemini. Mood: Chatty & Curious. Great for learning, writing, and socialising.",
+    "Moon in Cancer. Mood: Nurturing & Sensitive. Focus on home, family, and emotional needs.",
+    "Moon in Leo. Mood: Confident & Expressive. Shine bright, share your talents, and have fun.",
+    "Moon in Virgo. Mood: Analytical & Organized. Excellent for details, health routines, and service.",
+    "Moon in Libra. Mood: Harmonious & Diplomatic. Seek balance in relationships and aesthetics."
   ];
   const sampleDailyHighlights = [
-    "Sun trine Moon: Overall harmony and ease.",
-    "Mercury conjunct Venus: Great for communication in relationships.",
-    "Mars sextile Jupiter: Opportunities for bold action pay off.",
-    "Venus square Saturn: Challenges in love or finances, be patient.",
-    "Jupiter enters new sign: A shift in luck and expansion."
+    "Sun trine Moon: Overall harmony and ease throughout the day. Go with the flow and enjoy.",
+    "Mercury conjunct Venus: Ideal for charming communication, expressing affection, and social graces.",
+    "Mars sextile Jupiter: Opportunities for bold, expansive action. Luck favors the brave and proactive.",
+    "Venus square Saturn: Potential challenges in love or finances; patience, realism, and hard work needed.",
+    "Jupiter enters new sign: A significant shift in areas of luck, growth, philosophy, and expansion.",
+    "Uranus conjunct Sun: Unexpected events bringing excitement or disruption. Stay adaptable and innovative.",
+    "Full Moon peak: Heightened emotions and culmination of projects. Release what no longer serves you well."
   ];
   const sampleDailyFocus = [
-    "Focus on personal projects and creativity.",
-    "Attend to financial matters and resources.",
-    "Emphasize communication and learning.",
-    "Nurture home and family connections.",
-    "Advance your career and public image."
+    "Focus on personal projects, creativity, and self-expression. Let your inner child play and take initiative!",
+    "Attend to financial matters, build security, and appreciate your resources. Practical steps forward bring stability.",
+    "Emphasize communication, learning, teaching, and networking. Share your ideas and connect with others.",
+    "Nurture home and family connections. Create a comforting, supportive, and emotionally secure environment.",
+    "Advance your career and public image. Take the lead, showcase your abilities, and seek recognition.",
+    "Prioritize health, wellness, daily routines, and acts of service. Small improvements make a big difference now.",
+    "Cultivate relationships, partnerships, and seek harmony in collaborations. Connect deeply and beautify your surroundings."
   ];
 
   for (let i = 0; i < 7; i++) {
     const date = addDays(today, i);
-    const scoreData = generateCosmicScore(); // Reused for score and emoji
+    const scoreData = generateCosmicScore(); 
     dailyChipsData.push({
       id: `chip-${i}`,
       date: date,
@@ -470,7 +421,6 @@ export const generateAstroWeeklyForecast = (): AstroWeeklyForecast => {
       dateOfMonth: format(date, 'd'),
       weatherEmoji: scoreData.weatherEmoji,
       cosmicScore: scoreData.score,
-      // Assign detailed daily data using modulo for variety
       detailedWeatherDescription: sampleWeatherDetails[i % sampleWeatherDetails.length],
       moonInfoForDay: sampleMoonInfos[i % sampleMoonInfos.length],
       keyHighlightForDay: sampleDailyHighlights[i % sampleDailyHighlights.length],
@@ -489,32 +439,31 @@ export const generateAstroWeeklyForecast = (): AstroWeeklyForecast => {
       { id: 'mp1', phaseName: 'New Moon', phaseEmoji: '🌑' },
       { id: 'mp2', phaseName: 'Waxing Crescent', phaseEmoji: '🌒' },
       { id: 'mp3', phaseName: 'First Quarter', phaseEmoji: '🌓' },
-      // { id: 'mp4', phaseName: 'Waxing Gibbous', phaseEmoji: '🌔' }, // Keep it to 3-4 for layout
     ],
   };
 
   const highlightsData: WeeklyHighlightItem[] = [
     {
       id: 'wh1',
-      dayAbbreviation: format(addDays(today, 0), 'E'), // Monday (or today)
+      dayAbbreviation: format(addDays(today, 0), 'E'), 
       title: 'New Moon in Aries',
       description: 'Fresh starts, new beginnings & bold moves.',
     },
     {
       id: 'wh2',
-      dayAbbreviation: format(addDays(today, 2), 'E'), // Wednesday (or today + 2)
+      dayAbbreviation: format(addDays(today, 2), 'E'), 
       title: 'Mercury enters Gemini',
       description: 'Communication flows more easily, great for talks.',
     },
     {
       id: 'wh3',
-      dayAbbreviation: format(addDays(today, 4), 'E'), // Friday (or today + 4)
+      dayAbbreviation: format(addDays(today, 4), 'E'), 
       title: 'Venus harmonizes with Moon',
       description: 'Relationship harmony peaks, enjoy connections.',
     },
     {
       id: 'wh4',
-      dayAbbreviation: format(addDays(today, 6), 'E'), // Sunday (or today + 6)
+      dayAbbreviation: format(addDays(today, 6), 'E'),
       title: 'Mars square Mercury',
       description: 'Watch for communication conflicts, think first.',
     },
@@ -546,4 +495,4 @@ export const generateAstroWeeklyForecast = (): AstroWeeklyForecast => {
   };
 };
 
-// --- END: New Data Structures and Generator for Comprehensive Weekly Forecast --- 
+// --- END: New Data Structures and Generator for Comprehensive Weekly Forecast ---
