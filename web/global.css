@@ -1,0 +1,69 @@
+/* Global styles for AstroWeather Web */
+
+/* Reset and base styles */
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: #0F0F1E;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Root container */
+#root {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #0F0F1E;
+}
+
+/* Main app container */
+#root > div {
+  width: 100%;
+  max-width: 428px;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  background-color: #0F0F1E;
+}
+
+/* Fix for React Native Web ScrollView */
+[data-testid="ScrollView"] {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Fix for React Native Web View containers */
+.css-view-1dbjc4n {
+  width: 100% !important;
+}
+
+/* Prevent horizontal scroll */
+.css-view-1dbjc4n[style*="overflow-x"] {
+  overflow-x: hidden !important;
+}
+
+/* Mobile responsive */
+@media (max-width: 428px) {
+  #root > div {
+    max-width: 100%;
+  }
+}
+
+/* Fix for status bar on mobile web */
+@supports (padding-top: env(safe-area-inset-top)) {
+  #root > div {
+    padding-top: env(safe-area-inset-top);
+  }
+} 
