@@ -121,7 +121,7 @@ export const HomeScreen: React.FC = () => {
             <CosmicScore data={cosmicScore} />
 
             {/* Moon Tracker */}
-            {/* <MoonTracker data={moonData} /> */}
+            <MoonTracker data={moonData} />
 
             {/* Life Area Focus */}
             <LifeAreaFocus data={lifeAreas} />
