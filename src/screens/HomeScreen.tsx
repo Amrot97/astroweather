@@ -171,16 +171,6 @@ export const HomeScreen: React.FC = () => {
                 label: 'Weekly Preview',
                 onPress: () => setIsWeeklyModalVisible(true),
               },
-              {
-                icon: 'bell',
-                label: 'Set Reminders',
-                onPress: () => {},
-              },
-              {
-                icon: 'share',
-                label: 'Share Today',
-                onPress: () => {},
-              },
             ]}
             onStateChange={({ open }) => setFabOpen(open)}
             onPress={() => {
