@@ -48,7 +48,7 @@ export const TransitAlerts: React.FC<Props> = ({ data }) => {
   return (
     <View style={styles.container}>
       <Card style={styles.card} mode="elevated" elevation={1}>
-        <Card.Content>
+        <Card.Content style={{ paddingHorizontal: 0 }}>
           <View style={styles.header}>
             <Text style={styles.title}>TODAY'S COSMIC HIGHLIGHTS</Text>
             <Text style={styles.subtitle}>Swipe to explore</Text>
@@ -126,7 +126,8 @@ export const TransitAlerts: React.FC<Props> = ({ data }) => {
           {/* Page indicators */}
           <View style={styles.pagination}>
             {data.map((_, index) => {
-              const itemEffectiveWidth = width - 64;
+              const scrollViewWidth = width - 32; // screenWidth - (2 * 16 container margin)
+              const itemEffectiveWidth = scrollViewWidth;
               const inputRange = [
                 (index - 1) * itemEffectiveWidth,
                 index * itemEffectiveWidth,
@@ -219,7 +220,8 @@ const dynamicStyles = (theme: MD3Theme) => StyleSheet.create({
     color: 'rgba(229, 229, 231, 0.7)',
   },
   alertCard: {
-    width: width - 64,
+    width: width - 32, // screenWidth - (2 * 16 container margin)
+    paddingHorizontal: 16, // Inner padding for the card content
     paddingVertical: 16,
     borderRadius: 12,
     borderWidth: 1.5,
