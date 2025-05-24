@@ -27,8 +27,8 @@ import {
   generateTransitAlerts,
   getTimeBasedContent,
   mockUserProfile,
-  WeeklyPreview as WeeklyPreviewType,
-  generateWeeklyPreview,
+  AstroWeeklyForecast as AstroWeeklyForecastType,
+  generateAstroWeeklyForecast,
 } from '../data/mockData';
 
 import { cosmicGradients } from '../theme/theme';
@@ -48,7 +48,7 @@ export const HomeScreen: React.FC = () => {
   const [userProfile] = useState(mockUserProfile);
 
   // State for Weekly Preview Modal
-  const [weeklyPreviewData, setWeeklyPreviewData] = useState<WeeklyPreviewType[]>([]);
+  const [astroWeeklyForecast, setAstroWeeklyForecast] = useState<AstroWeeklyForecastType | null>(null);
   const [isWeeklyModalVisible, setIsWeeklyModalVisible] = useState(false);
 
   const refreshData = useCallback(() => {
@@ -58,7 +58,7 @@ export const HomeScreen: React.FC = () => {
     setLifeAreas(generateLifeAreaFocus());
     setTransitAlerts(generateTransitAlerts());
     setTimeContent(getTimeBasedContent());
-    setWeeklyPreviewData(generateWeeklyPreview());
+    setAstroWeeklyForecast(generateAstroWeeklyForecast());
   }, []);
 
   const onRefresh = useCallback(async () => {
@@ -73,8 +73,8 @@ export const HomeScreen: React.FC = () => {
       setTimeContent(getTimeBasedContent());
     }, 3600000);
 
-    // Load initial weekly preview data
-    setWeeklyPreviewData(generateWeeklyPreview());
+    // Load initial weekly forecast data
+    setAstroWeeklyForecast(generateAstroWeeklyForecast());
 
     return () => {
       clearInterval(hourlyInterval);
@@ -183,7 +183,7 @@ export const HomeScreen: React.FC = () => {
           <WeeklyPreviewModal 
             visible={isWeeklyModalVisible} 
             onClose={() => setIsWeeklyModalVisible(false)} 
-            data={weeklyPreviewData} 
+            data={astroWeeklyForecast} 
           /> 
           
         </Portal>

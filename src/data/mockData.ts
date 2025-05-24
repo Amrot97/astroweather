@@ -368,4 +368,144 @@ export const generateWeeklyPreview = (): WeeklyPreview[] => {
   }
   
   return preview;
-}; 
+};
+
+// --- START: New Data Structures and Generator for Comprehensive Weekly Forecast ---
+
+// For the top day selector in the new weekly forecast view
+export interface DailyWeatherChip {
+  id: string; // For key prop
+  date: Date;
+  dayAbbreviation: string; // e.g., "Mon"
+  dateOfMonth: string;   // e.g., "20"
+  weatherEmoji: string;  // e.g., "☀️"
+  cosmicScore: number; // To have the score available if needed
+}
+
+// For the "Moon Movement This Week" card
+export interface WeeklyMoonSignChange {
+  id: string;
+  period: string; // e.g., "Mon-Tue"
+  sign: string;   // e.g., "Aries"
+  zodiacSymbol: string; // e.g., "♈️"
+}
+export interface WeeklyMoonPhase {
+  id: string;
+  phaseName: string; // e.g., "New Moon"
+  phaseEmoji: string; // e.g., "🌑"
+}
+export interface MoonMovementData {
+  signChanges: WeeklyMoonSignChange[];
+  phases: WeeklyMoonPhase[];
+}
+
+// For the "Weekly Highlights" card
+export interface WeeklyHighlightItem {
+  id: string;
+  dayAbbreviation: string; // e.g., "Mon"
+  title: string;           // e.g., "New Moon in Aries"
+  description: string;     // e.g., "Fresh starts, new beginnings"
+}
+
+// For the "Weekly Focus Areas" card
+export interface WeeklyFocusPeriod {
+  id: string;
+  title: string;       // e.g., "Early Week (Mon-Wed)"
+  description: string; // e.g., "Personal identity & self-expression (1st House)"
+}
+
+// The comprehensive forecast object for the new weekly view
+export interface AstroWeeklyForecast {
+  dailyChips: DailyWeatherChip[];
+  moonMovement: MoonMovementData;
+  highlights: WeeklyHighlightItem[];
+  focusAreas: WeeklyFocusPeriod[];
+}
+
+export const generateAstroWeeklyForecast = (): AstroWeeklyForecast => {
+  const today = new Date();
+  const dailyChipsData: DailyWeatherChip[] = [];
+  const tempScores = ['☀️', '⛅', '☁️', '🌧️', '💨', '✨', '🌤️'];
+
+  for (let i = 0; i < 7; i++) {
+    const date = addDays(today, i);
+    const scoreData = generateCosmicScore(); // Reuse for score and emoji consistency
+    dailyChipsData.push({
+      id: `chip-${i}`,
+      date: date,
+      dayAbbreviation: format(date, 'E'),
+      dateOfMonth: format(date, 'd'),
+      weatherEmoji: scoreData.weatherEmoji,
+      cosmicScore: scoreData.score,
+    });
+  }
+
+  const moonMovementData: MoonMovementData = {
+    signChanges: [
+      { id: 'msc1', period: 'Mon-Tue', sign: 'Aries', zodiacSymbol: '♈️' },
+      { id: 'msc2', period: 'Wed-Thu', sign: 'Taurus', zodiacSymbol: '♉️' },
+      { id: 'msc3', period: 'Fri-Sat', sign: 'Gemini', zodiacSymbol: '♊️' },
+      { id: 'msc4', period: 'Sun', sign: 'Cancer', zodiacSymbol: '♋️' },
+    ],
+    phases: [
+      { id: 'mp1', phaseName: 'New Moon', phaseEmoji: '🌑' },
+      { id: 'mp2', phaseName: 'Waxing Crescent', phaseEmoji: '🌒' },
+      { id: 'mp3', phaseName: 'First Quarter', phaseEmoji: '🌓' },
+      // { id: 'mp4', phaseName: 'Waxing Gibbous', phaseEmoji: '🌔' }, // Keep it to 3-4 for layout
+    ],
+  };
+
+  const highlightsData: WeeklyHighlightItem[] = [
+    {
+      id: 'wh1',
+      dayAbbreviation: format(addDays(today, 0), 'E'), // Monday (or today)
+      title: 'New Moon in Aries',
+      description: 'Fresh starts, new beginnings & bold moves.',
+    },
+    {
+      id: 'wh2',
+      dayAbbreviation: format(addDays(today, 2), 'E'), // Wednesday (or today + 2)
+      title: 'Mercury enters Gemini',
+      description: 'Communication flows more easily, great for talks.',
+    },
+    {
+      id: 'wh3',
+      dayAbbreviation: format(addDays(today, 4), 'E'), // Friday (or today + 4)
+      title: 'Venus harmonizes with Moon',
+      description: 'Relationship harmony peaks, enjoy connections.',
+    },
+    {
+      id: 'wh4',
+      dayAbbreviation: format(addDays(today, 6), 'E'), // Sunday (or today + 6)
+      title: 'Mars square Mercury',
+      description: 'Watch for communication conflicts, think first.',
+    },
+  ];
+
+  const focusAreasData: WeeklyFocusPeriod[] = [
+    {
+      id: 'wf1',
+      title: 'Early Week (Mon-Wed)',
+      description: 'Personal identity & self-expression (1st House activity)',
+    },
+    {
+      id: 'wf2',
+      title: 'Mid Week (Thu-Fri)',
+      description: 'Career & public reputation (10th House focus)',
+    },
+    {
+      id: 'wf3',
+      title: 'Weekend (Sat-Sun)',
+      description: 'Home & family matters (4th House vibes)',
+    },
+  ];
+
+  return {
+    dailyChips: dailyChipsData,
+    moonMovement: moonMovementData,
+    highlights: highlightsData,
+    focusAreas: focusAreasData,
+  };
+};
+
+// --- END: New Data Structures and Generator for Comprehensive Weekly Forecast --- 
