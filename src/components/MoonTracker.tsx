@@ -13,7 +13,7 @@ interface Props {
 export const MoonTracker: React.FC<Props> = ({ data }) => {
   const theme = useTheme();
   const [timeUntilChange, setTimeUntilChange] = useState('');
-  const slideAnim = new Animated.Value(0);
+  const slideAnim = new Animated.Value(1);
 
   useEffect(() => {
     // Update countdown every minute
@@ -56,18 +56,17 @@ export const MoonTracker: React.FC<Props> = ({ data }) => {
     <Animated.View
       style={[
         styles.container,
-        // Temporarily remove animation styles for debugging
-        // {
-        //   opacity: slideAnim,
-        //   transform: [
-        //     {
-        //       translateX: slideAnim.interpolate({
-        //         inputRange: [0, 1],
-        //         outputRange: [50, 0],
-        //       }),
-        //     },
-        //   ],
-        // },
+        {
+          opacity: slideAnim,
+          transform: [
+            {
+              translateX: slideAnim.interpolate({
+                inputRange: [0, 1],
+                outputRange: [50, 0],
+              }),
+            },
+          ],
+        },
       ]}
     >
       <Card style={styles.card} mode="elevated" elevation={1}>
@@ -169,8 +168,6 @@ const styles = StyleSheet.create({
   container: {
     marginHorizontal: 16,
     marginVertical: 8,
-    height: 300,
-    backgroundColor: 'rgba(255,0,0,0.3)',
   },
   card: {
     backgroundColor: '#1F1F33',
