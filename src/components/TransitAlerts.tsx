@@ -126,7 +126,7 @@ export const TransitAlerts: React.FC<Props> = ({ data }) => {
           {/* Page indicators */}
           <View style={styles.pagination}>
             {data.map((_, index) => {
-              const itemEffectiveWidth = width - 32;
+              const itemEffectiveWidth = width - 64;
               const inputRange = [
                 (index - 1) * itemEffectiveWidth,
                 index * itemEffectiveWidth,
@@ -219,8 +219,7 @@ const dynamicStyles = (theme: MD3Theme) => StyleSheet.create({
     color: 'rgba(229, 229, 231, 0.7)',
   },
   alertCard: {
-    width: width - 32,
-    paddingHorizontal: 16,
+    width: width - 64,
     paddingVertical: 16,
     borderRadius: 12,
     borderWidth: 1.5,
