@@ -40,12 +40,12 @@ export const MoonTracker: React.FC<Props> = ({ data }) => {
       Earth: '#10B981',
       Air: '#06B6D4',
       Water: '#8B5CF6',
-    };
+    } as any;
     return colors[element] || theme.colors.primary;
   };
 
   const getZodiacColor = () => {
-    return zodiacColors[data.sign.toLowerCase()] || theme.colors.primary;
+    return (zodiacColors as any)[data.sign.toLowerCase()] || theme.colors.primary;
   };
 
   const handleChipPress = () => {
@@ -168,6 +168,8 @@ const styles = StyleSheet.create({
   container: {
     marginHorizontal: 16,
     marginVertical: 8,
+    height: 300,
+    backgroundColor: 'rgba(255,0,0,0.3)',
   },
   card: {
     backgroundColor: '#1F1F33',
