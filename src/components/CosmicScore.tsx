@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from 'react';
 import { View, StyleSheet, Animated, Dimensions } from 'react-native';
 import { Card, Text, useTheme } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
-import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import { CosmicScore as CosmicScoreType } from '../data/mockData';
 import { cosmicGradients } from '../theme/theme';
 
@@ -65,69 +64,24 @@ export const CosmicScore: React.FC<Props> = ({ data }) => {
             <Text style={styles.title}>TODAY'S COSMIC WEATHER</Text>
             
             <View style={styles.scoreContainer}>
-              <AnimatedCircularProgress
-                size={circularProgressSize}
-                width={15}
-                fill={fillPercentage}
-                tintColor="#8B5CF6"
-                backgroundColor="rgba(139, 92, 246, 0.2)"
-                rotation={-90}
-                lineCap="round"
-                duration={2000}
+              <Animated.View
+                style={[
+                  styles.emojiContainer,
+                  { transform: [{ scale: pulseAnim }] },
+                ]}
               >
-                {() => (
-                  <View style={styles.innerCircle}>
-                    <Animated.View
-                      style={[
-                        styles.emojiContainer,
-                        { transform: [{ scale: pulseAnim }] },
-                      ]}
-                    >
-                      <Text style={styles.emoji}>{data.weatherEmoji}</Text>
-                    </Animated.View>
-                    <Text style={styles.score}>
-                      {data.score}/{data.maxScore}
-                    </Text>
-                    <Text style={styles.description}>{data.description}</Text>
-                  </View>
-                )}
-              </AnimatedCircularProgress>
+                <Text style={styles.emoji}>{data.weatherEmoji}</Text>
+              </Animated.View>
+              <Text style={styles.scoreText}>
+                {data.score}/{data.maxScore}
+              </Text>
+              <Text style={styles.weatherMetaphorText}>
+                {data.description}
+              </Text>
             </View>
 
             <View style={styles.detailsContainer}>
               <Text style={styles.details}>{data.details}</Text>
-            </View>
-
-            {/* Energy bars visualization */}
-            <View style={styles.energyBars}>
-              <View style={styles.energyBarRow}>
-                <Text style={styles.energyLabel}>Harmony</Text>
-                <View style={styles.energyBarContainer}>
-                  <Animated.View
-                    style={[
-                      styles.energyBar,
-                      {
-                        width: `${data.score >= 3 ? 80 : 40}%`,
-                        backgroundColor: '#A78BFA',
-                      },
-                    ]}
-                  />
-                </View>
-              </View>
-              <View style={styles.energyBarRow}>
-                <Text style={styles.energyLabel}>Challenge</Text>
-                <View style={styles.energyBarContainer}>
-                  <Animated.View
-                    style={[
-                      styles.energyBar,
-                      {
-                        width: `${data.score <= 3 ? 60 : 20}%`,
-                        backgroundColor: '#EC4899',
-                      },
-                    ]}
-                  />
-                </View>
-              </View>
             </View>
           </View>
         </LinearGradient>
@@ -164,8 +118,9 @@ const styles = StyleSheet.create({
     marginVertical: 20,
   },
   innerCircle: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    // This style is no longer needed as AnimatedCircularProgress is removed
+    // alignItems: 'center',
+    // justifyContent: 'center',
   },
   emojiContainer: {
     marginBottom: 10,
@@ -173,16 +128,17 @@ const styles = StyleSheet.create({
   emoji: {
     fontSize: 48,
   },
-  score: {
+  scoreText: {
     fontSize: 32,
     fontWeight: 'bold',
     color: '#E5E5E7',
     marginBottom: 5,
   },
-  description: {
-    fontSize: 16,
+  weatherMetaphorText: {
+    fontSize: 18,
     color: 'rgba(229, 229, 231, 0.9)',
     fontWeight: '500',
+    marginBottom: 20,
   },
   detailsContainer: {
     marginTop: 20,
@@ -193,30 +149,5 @@ const styles = StyleSheet.create({
     color: 'rgba(229, 229, 231, 0.7)',
     textAlign: 'center',
     lineHeight: 20,
-  },
-  energyBars: {
-    width: '100%',
-    marginTop: 20,
-  },
-  energyBarRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginVertical: 5,
-  },
-  energyLabel: {
-    fontSize: 12,
-    color: 'rgba(229, 229, 231, 0.6)',
-    width: 70,
-  },
-  energyBarContainer: {
-    flex: 1,
-    height: 8,
-    backgroundColor: 'rgba(139, 92, 246, 0.1)',
-    borderRadius: 4,
-    overflow: 'hidden',
-  },
-  energyBar: {
-    height: '100%',
-    borderRadius: 4,
   },
 }); 
