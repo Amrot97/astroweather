@@ -20,7 +20,7 @@ export interface MoonData {
 }
 
 export interface LifeAreaFocus {
-  id: string;
+  // id: string; // Removed for revert
   house: number;
   name: string;
   emoji: string;
@@ -136,7 +136,7 @@ export const generateMoonData = (): MoonData => {
 export const generateLifeAreaFocus = (): LifeAreaFocus[] => {
   const areas = [
     {
-      id: 'la_career',
+      // id: 'la_career',
       house: 10,
       name: 'Career & Public Life',
       emoji: '💼',
@@ -145,7 +145,7 @@ export const generateLifeAreaFocus = (): LifeAreaFocus[] => {
       activities: ['Presentations', 'Networking', 'Job interviews', 'Public speaking'],
     },
     {
-      id: 'la_relationships',
+      // id: 'la_relationships',
       house: 7,
       name: 'Relationships',
       emoji: '💕',
@@ -154,7 +154,7 @@ export const generateLifeAreaFocus = (): LifeAreaFocus[] => {
       activities: ['Date nights', 'Partner discussions', 'Collaborations', 'Contracts'],
     },
     {
-      id: 'la_money',
+      // id: 'la_money',
       house: 2,
       name: 'Money & Resources',
       emoji: '💰',
@@ -163,7 +163,7 @@ export const generateLifeAreaFocus = (): LifeAreaFocus[] => {
       activities: ['Budget planning', 'Investment decisions', 'Shopping', 'Salary negotiations'],
     },
     {
-      id: 'la_creativity',
+      // id: 'la_creativity',
       house: 5,
       name: 'Creativity & Romance',
       emoji: '🎨',
@@ -172,7 +172,7 @@ export const generateLifeAreaFocus = (): LifeAreaFocus[] => {
       activities: ['Art projects', 'Dating', 'Hobbies', 'Fun activities'],
     },
     {
-      id: 'la_health',
+      // id: 'la_health',
       house: 6,
       name: 'Health & Routine',
       emoji: '🏃',
