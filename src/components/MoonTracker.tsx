@@ -56,17 +56,18 @@ export const MoonTracker: React.FC<Props> = ({ data }) => {
     <Animated.View
       style={[
         styles.container,
-        {
-          opacity: slideAnim,
-          transform: [
-            {
-              translateX: slideAnim.interpolate({
-                inputRange: [0, 1],
-                outputRange: [50, 0],
-              }),
-            },
-          ],
-        },
+        // Temporarily remove animation styles for debugging
+        // {
+        //   opacity: slideAnim,
+        //   transform: [
+        //     {
+        //       translateX: slideAnim.interpolate({
+        //         inputRange: [0, 1],
+        //         outputRange: [50, 0],
+        //       }),
+        //     },
+        //   ],
+        // },
       ]}
     >
       <Card style={styles.card} mode="elevated" elevation={1}>
