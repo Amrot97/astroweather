@@ -25,6 +25,7 @@
     },
     "web": {
       "bundler": "webpack",
+      "favicon": "./assets/icon.png",
       "build": {
         "babel": {
           "include": ["react-native-vector-icons"]
