@@ -109,8 +109,35 @@ export const WeeklyPreviewModal: React.FC<Props> = ({ visible, onClose, data }) 
               </ScrollView>
             </View>
 
-            {/* Selected Day Details (Optional - could show score or specific details for selected day) */}
-            {/* For now, the selection just highlights the chip as per image */}
+            {/* START: Selected Day Details Card */}
+            {selectedDay && (
+              <Card style={styles.selectedDayDetailsCard}>
+                <Card.Content>
+                  <Text style={styles.selectedDayTitle}>
+                    Forecast for {format(selectedDay.date, 'E, MMM d')}
+                  </Text>
+                  <Divider style={styles.selectedDayDivider} />
+                  
+                  <View style={styles.detailRow}>
+                    <Text style={styles.detailIcon}>🌦️</Text>
+                    <Text style={styles.selectedDayDetailText}>{selectedDay.detailedWeatherDescription}</Text>
+                  </View>
+                  <View style={styles.detailRow}>
+                    <Text style={styles.detailIcon}>🌕</Text>
+                    <Text style={styles.selectedDayDetailText}>{selectedDay.moonInfoForDay}</Text>
+                  </View>
+                  <View style={styles.detailRow}>
+                    <Text style={styles.detailIcon}>✨</Text>
+                    <Text style={styles.selectedDayDetailText}>{selectedDay.keyHighlightForDay}</Text>
+                  </View>
+                  <View style={styles.detailRow}>
+                    <Text style={styles.detailIcon}>🎯</Text>
+                    <Text style={styles.selectedDayDetailText}>{selectedDay.focusForDay}</Text>
+                  </View>
+                </Card.Content>
+              </Card>
+            )}
+            {/* END: Selected Day Details Card */}
 
             {/* Moon Movement This Week */}
             <Card style={styles.sectionCard}>
@@ -358,6 +385,42 @@ const dynamicStyles = (theme: MD3Theme) =>
       color: theme.colors.onSurfaceVariant,
       lineHeight: 18,
     },
+    // START: Styles for Selected Day Details Card
+    selectedDayDetailsCard: {
+      marginHorizontal: 16,
+      marginTop: 16,
+      borderRadius: 12,
+      backgroundColor: theme.dark ? '#2C2C44' : theme.colors.surface, // Slightly different from section cards
+      elevation: 2,
+    },
+    selectedDayTitle: {
+      fontSize: 16,
+      fontWeight: 'bold',
+      color: theme.colors.primary,
+      marginBottom: 8,
+    },
+    selectedDayDivider: {
+      marginBottom: 12,
+      backgroundColor: theme.dark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)',
+    },
+    detailRow: {
+      flexDirection: 'row',
+      alignItems: 'flex-start',
+      marginBottom: 8,
+    },
+    detailIcon: {
+      fontSize: 16,
+      marginRight: 10,
+      color: theme.colors.onSurfaceVariant, // Use a subtle color for icons
+      marginTop: 1, // Align with text better
+    },
+    selectedDayDetailText: {
+      fontSize: 14,
+      color: theme.colors.onSurface,
+      lineHeight: 20,
+      flex: 1, // Allow text to wrap
+    },
+    // END: Styles for Selected Day Details Card
   });
 
 export default WeeklyPreviewModal; 

@@ -379,7 +379,12 @@ export interface DailyWeatherChip {
   dayAbbreviation: string; // e.g., "Mon"
   dateOfMonth: string;   // e.g., "20"
   weatherEmoji: string;  // e.g., "☀️"
-  cosmicScore: number; // To have the score available if needed
+  cosmicScore: number; 
+  // New fields for detailed daily forecast when this chip is selected
+  detailedWeatherDescription: string; // e.g., "Mixed energies - good for routine tasks"
+  moonInfoForDay: string; // e.g., "Moon in Gemini. Mood: Chatty & Curious."
+  keyHighlightForDay: string; // e.g., "Venus trine your Moon: Harmonious relationships."
+  focusForDay: string; // e.g., "Focus on Career & Public Life today."
 }
 
 // For the "Moon Movement This Week" card
@@ -425,11 +430,39 @@ export interface AstroWeeklyForecast {
 export const generateAstroWeeklyForecast = (): AstroWeeklyForecast => {
   const today = new Date();
   const dailyChipsData: DailyWeatherChip[] = [];
-  const tempScores = ['☀️', '⛅', '☁️', '🌧️', '💨', '✨', '🌤️'];
+  // Sample data pools for variety in daily details
+  const sampleWeatherDetails = [
+    "Excellent energy for new beginnings and important decisions.",
+    "Mixed energies today. Good for routine tasks and steady progress.",
+    "Low energy day. Focus on rest and reflection. Avoid major decisions.",
+    "Generally positive energy with brief moments of tension. Stay flexible.",
+    "A dynamic day! Expect the unexpected and embrace change."
+  ];
+  const sampleMoonInfos = [
+    "Moon in Aries. Mood: Energetic & Impulsive.",
+    "Moon in Taurus. Mood: Sensual & Grounded.",
+    "Moon in Gemini. Mood: Chatty & Curious.",
+    "Moon in Cancer. Mood: Nurturing & Sensitive.",
+    "Moon in Leo. Mood: Confident & Expressive."
+  ];
+  const sampleDailyHighlights = [
+    "Sun trine Moon: Overall harmony and ease.",
+    "Mercury conjunct Venus: Great for communication in relationships.",
+    "Mars sextile Jupiter: Opportunities for bold action pay off.",
+    "Venus square Saturn: Challenges in love or finances, be patient.",
+    "Jupiter enters new sign: A shift in luck and expansion."
+  ];
+  const sampleDailyFocus = [
+    "Focus on personal projects and creativity.",
+    "Attend to financial matters and resources.",
+    "Emphasize communication and learning.",
+    "Nurture home and family connections.",
+    "Advance your career and public image."
+  ];
 
   for (let i = 0; i < 7; i++) {
     const date = addDays(today, i);
-    const scoreData = generateCosmicScore(); // Reuse for score and emoji consistency
+    const scoreData = generateCosmicScore(); // Reused for score and emoji
     dailyChipsData.push({
       id: `chip-${i}`,
       date: date,
@@ -437,6 +470,11 @@ export const generateAstroWeeklyForecast = (): AstroWeeklyForecast => {
       dateOfMonth: format(date, 'd'),
       weatherEmoji: scoreData.weatherEmoji,
       cosmicScore: scoreData.score,
+      // Assign detailed daily data using modulo for variety
+      detailedWeatherDescription: sampleWeatherDetails[i % sampleWeatherDetails.length],
+      moonInfoForDay: sampleMoonInfos[i % sampleMoonInfos.length],
+      keyHighlightForDay: sampleDailyHighlights[i % sampleDailyHighlights.length],
+      focusForDay: sampleDailyFocus[i % sampleDailyFocus.length],
     });
   }
 
