@@ -17,6 +17,7 @@ import { CosmicScore } from '../components/CosmicScore';
 import { MoonTracker } from '../components/MoonTracker';
 import { LifeAreaFocus } from '../components/LifeAreaFocus';
 import { TransitAlerts } from '../components/TransitAlerts';
+import { WeeklyPreviewModal } from '../components/WeeklyPreviewModal';
 
 // Data
 import {
@@ -26,6 +27,8 @@ import {
   generateTransitAlerts,
   getTimeBasedContent,
   mockUserProfile,
+  WeeklyPreview as WeeklyPreviewType,
+  generateWeeklyPreview,
 } from '../data/mockData';
 
 import { cosmicGradients } from '../theme/theme';
@@ -44,6 +47,10 @@ export const HomeScreen: React.FC = () => {
   const [timeContent, setTimeContent] = useState(getTimeBasedContent());
   const [userProfile] = useState(mockUserProfile);
 
+  // State for Weekly Preview Modal
+  const [weeklyPreviewData, setWeeklyPreviewData] = useState<WeeklyPreviewType[]>([]);
+  const [isWeeklyModalVisible, setIsWeeklyModalVisible] = useState(false);
+
   const refreshData = useCallback(() => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     setCosmicScore(generateCosmicScore());
@@ -51,6 +58,7 @@ export const HomeScreen: React.FC = () => {
     setLifeAreas(generateLifeAreaFocus());
     setTransitAlerts(generateTransitAlerts());
     setTimeContent(getTimeBasedContent());
+    setWeeklyPreviewData(generateWeeklyPreview());
   }, []);
 
   const onRefresh = useCallback(async () => {
@@ -61,11 +69,16 @@ export const HomeScreen: React.FC = () => {
 
   useEffect(() => {
     // Update time-based content every hour
-    const interval = setInterval(() => {
+    const hourlyInterval = setInterval(() => {
       setTimeContent(getTimeBasedContent());
     }, 3600000);
 
-    return () => clearInterval(interval);
+    // Load initial weekly preview data
+    setWeeklyPreviewData(generateWeeklyPreview());
+
+    return () => {
+      clearInterval(hourlyInterval);
+    };
   }, []);
 
   const getHeaderGradientColors = () => {
@@ -142,9 +155,9 @@ export const HomeScreen: React.FC = () => {
             icon={fabOpen ? 'close' : 'plus'}
             actions={[
               {
-                icon: 'calendar',
+                icon: 'calendar-week',
                 label: 'Weekly Preview',
-                onPress: () => {},
+                onPress: () => setIsWeeklyModalVisible(true),
               },
               {
                 icon: 'bell',
@@ -166,6 +179,13 @@ export const HomeScreen: React.FC = () => {
             style={styles.fab}
             fabStyle={{ backgroundColor: theme.colors.primary }}
           />
+          
+          <WeeklyPreviewModal 
+            visible={isWeeklyModalVisible} 
+            onClose={() => setIsWeeklyModalVisible(false)} 
+            data={weeklyPreviewData} 
+          /> 
+          
         </Portal>
       </View>
     </Provider>
