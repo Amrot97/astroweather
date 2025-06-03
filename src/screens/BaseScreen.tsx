@@ -3,6 +3,7 @@ import { View, StyleSheet, StatusBar } from 'react-native';
 import { Appbar, useTheme, MD3Theme } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
 import { format } from 'date-fns';
+import { useNavigation } from '@react-navigation/native';
 
 interface BaseScreenProps {
   title: string;
@@ -18,7 +19,16 @@ export const BaseScreen: React.FC<BaseScreenProps> = ({
   onBackPress,
 }) => {
   const theme = useTheme();
+  const navigation = useNavigation();
   const styles = dynamicStyles(theme);
+
+  const handleBackPress = () => {
+    if (onBackPress) {
+      onBackPress();
+    } else {
+      navigation.goBack();
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -33,7 +43,7 @@ export const BaseScreen: React.FC<BaseScreenProps> = ({
         <Appbar.Header style={styles.appBar} elevated={false}>
           {showBackButton && (
             <Appbar.BackAction
-              onPress={onBackPress}
+              onPress={handleBackPress}
               color="white"
             />
           )}
