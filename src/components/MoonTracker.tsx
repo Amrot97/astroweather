@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, ScrollView, Animated } from 'react-native';
+import { View, StyleSheet, ScrollView, Animated, TouchableOpacity } from 'react-native';
 import { Card, Text, Chip, Divider, useTheme, IconButton } from 'react-native-paper';
 import { format, formatDistanceToNow } from 'date-fns';
 import { MoonData } from '../data/mockData';
@@ -8,9 +8,10 @@ import * as Haptics from 'expo-haptics';
 
 interface Props {
   data: MoonData;
+  onPress?: () => void;
 }
 
-export const MoonTracker: React.FC<Props> = ({ data }) => {
+export const MoonTracker: React.FC<Props> = ({ data, onPress }) => {
   const theme = useTheme();
   const [timeUntilChange, setTimeUntilChange] = useState('');
   const slideAnim = new Animated.Value(1);
@@ -52,115 +53,124 @@ export const MoonTracker: React.FC<Props> = ({ data }) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
   };
 
-  return (
-    <Animated.View
-      style={[
-        styles.container,
-        {
-          opacity: slideAnim,
-          transform: [
-            {
-              translateX: slideAnim.interpolate({
-                inputRange: [0, 1],
-                outputRange: [50, 0],
-              }),
-            },
-          ],
-        },
-      ]}
-    >
-      <Card style={styles.card} mode="elevated" elevation={1}>
-        <Card.Content>
-          <View style={styles.header}>
-            <Text style={styles.title}>EMOTIONAL WEATHER</Text>
-            <IconButton
-              icon="information-outline"
-              size={20}
-              onPress={() => {}}
-              style={styles.infoButton}
-              iconColor="rgba(229, 229, 231, 0.6)"
-            />
-          </View>
+  const handlePress = () => {
+    if (onPress) {
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+      onPress();
+    }
+  };
 
-          {/* Moon Phase Visual */}
-          <View style={styles.moonPhaseContainer}>
-            <View style={styles.moonInfo}>
-              <Text style={styles.phaseEmoji}>{data.phaseEmoji}</Text>
-              <View style={styles.moonDetails}>
-                <Text style={styles.moonSign}>
-                  Moon in{' '}
-                  <Text style={[styles.signName, { color: getZodiacColor() }]}>
-                    {data.sign}
+  return (
+    <TouchableOpacity onPress={handlePress} activeOpacity={0.9}>
+      <Animated.View
+        style={[
+          styles.container,
+          {
+            opacity: slideAnim,
+            transform: [
+              {
+                translateX: slideAnim.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [50, 0],
+                }),
+              },
+            ],
+          },
+        ]}
+      >
+        <Card style={styles.card} mode="elevated" elevation={1}>
+          <Card.Content>
+            <View style={styles.header}>
+              <Text style={styles.title}>EMOTIONAL WEATHER</Text>
+              <IconButton
+                icon="information-outline"
+                size={20}
+                onPress={() => {}}
+                style={styles.infoButton}
+                iconColor="rgba(229, 229, 231, 0.6)"
+              />
+            </View>
+
+            {/* Moon Phase Visual */}
+            <View style={styles.moonPhaseContainer}>
+              <View style={styles.moonInfo}>
+                <Text style={styles.phaseEmoji}>{data.phaseEmoji}</Text>
+                <View style={styles.moonDetails}>
+                  <Text style={styles.moonSign}>
+                    Moon in{' '}
+                    <Text style={[styles.signName, { color: getZodiacColor() }]}>
+                      {data.sign}
+                    </Text>
                   </Text>
-                </Text>
-                <Text style={styles.phase}>{data.phase}</Text>
-                <Chip
-                  mode="flat"
-                  style={[
-                    styles.elementChip,
-                    { backgroundColor: getElementColor(data.element) },
-                  ]}
-                  textStyle={styles.elementChipText}
-                  onPress={handleChipPress}
-                >
-                  {data.element} Element
-                </Chip>
+                  <Text style={styles.phase}>{data.phase}</Text>
+                  <Chip
+                    mode="flat"
+                    style={[
+                      styles.elementChip,
+                      { backgroundColor: getElementColor(data.element) },
+                    ]}
+                    textStyle={styles.elementChipText}
+                    onPress={handleChipPress}
+                  >
+                    {data.element} Element
+                  </Chip>
+                </View>
               </View>
             </View>
-          </View>
 
-          <Divider style={styles.divider} />
+            <Divider style={styles.divider} />
 
-          {/* Mood and Energy */}
-          <View style={styles.moodContainer}>
-            <Text style={styles.moodLabel}>Current Mood</Text>
-            <Text style={styles.moodText}>{data.mood}</Text>
-          </View>
-
-          {/* Good For / Avoid Lists */}
-          <View style={styles.listsContainer}>
-            <View style={styles.listColumn}>
-              <Text style={styles.listTitle}>✓ Good for</Text>
-              {data.goodFor.map((item, index) => (
-                <View key={index} style={styles.listItem}>
-                  <Text style={styles.listItemText}>• {item}</Text>
-                </View>
-              ))}
+            {/* Mood and Energy */}
+            <View style={styles.moodContainer}>
+              <Text style={styles.moodLabel}>Current Mood</Text>
+              <Text style={styles.moodText}>{data.mood}</Text>
             </View>
-            
-            <View style={styles.listColumn}>
-              <Text style={[styles.listTitle, { color: '#EC4899' }]}>
-                ✗ Avoid
+
+            {/* Good For / Avoid Lists */}
+            <View style={styles.listsContainer}>
+              <View style={styles.listColumn}>
+                <Text style={styles.listTitle}>✓ Good for</Text>
+                {data.goodFor.map((item, index) => (
+                  <View key={index} style={styles.listItem}>
+                    <Text style={styles.listItemText}>• {item}</Text>
+                  </View>
+                ))}
+              </View>
+              
+              <View style={styles.listColumn}>
+                <Text style={[styles.listTitle, { color: '#EC4899' }]}>
+                  ✗ Avoid
+                </Text>
+                {data.avoid.map((item, index) => (
+                  <View key={index} style={styles.listItem}>
+                    <Text style={[styles.listItemText, { color: 'rgba(229, 229, 231, 0.6)' }]}>
+                      • {item}
+                    </Text>
+                  </View>
+                ))}
+              </View>
+            </View>
+
+            {/* Next Sign Change */}
+            <View style={styles.nextChangeContainer}>
+              <Text style={styles.nextChangeLabel}>Moon moves to next sign in</Text>
+              <Text style={styles.nextChangeTime}>{timeUntilChange}</Text>
+              <Text style={styles.nextChangeDate}>
+                {format(data.nextSignChange, 'EEEE, MMM d, h:mm a')}
               </Text>
-              {data.avoid.map((item, index) => (
-                <View key={index} style={styles.listItem}>
-                  <Text style={[styles.listItemText, { color: 'rgba(229, 229, 231, 0.6)' }]}>
-                    • {item}
-                  </Text>
-                </View>
-              ))}
             </View>
-          </View>
 
-          {/* Next Sign Change */}
-          <View style={styles.nextChangeContainer}>
-            <Text style={styles.nextChangeLabel}>Moon moves to next sign in</Text>
-            <Text style={styles.nextChangeTime}>{timeUntilChange}</Text>
-            <Text style={styles.nextChangeDate}>
-              {format(data.nextSignChange, 'EEEE, MMM d, h:mm a')}
-            </Text>
-          </View>
-
-          {/* Moon Tip */}
-          <View style={styles.tipContainer}>
-            <Text style={styles.tipEmoji}>💡</Text>
-            <Text style={styles.tipText}>
-              The Moon affects your emotions and instincts. Work with its energy for better results.
-            </Text>
-          </View>
-        </Card.Content>
-      </Card>
-    </Animated.View>
+            {/* Moon Tip */}
+            <View style={styles.tipContainer}>
+              <Text style={styles.tipEmoji}>💡</Text>
+              <Text style={styles.tipText}>
+                The Moon affects your emotions and instincts. Work with its energy for better results.
+              </Text>
+            </View>
+          </Card.Content>
+        </Card>
+      </Animated.View>
+    </TouchableOpacity>
   );
 };
 
@@ -198,40 +208,35 @@ const styles = StyleSheet.create({
   },
   phaseEmoji: {
     fontSize: 64,
-    marginRight: 20,
   },
   moonDetails: {
-    flex: 1,
+    marginLeft: 16,
   },
   moonSign: {
-    fontSize: 20,
-    fontWeight: '600',
-    marginBottom: 4,
-    color: '#E5E5E7',
+    fontSize: 16,
+    color: 'rgba(229, 229, 231, 0.9)',
   },
   signName: {
-    fontWeight: '700',
+    fontWeight: 'bold',
   },
   phase: {
-    fontSize: 16,
+    fontSize: 14,
     color: 'rgba(229, 229, 231, 0.7)',
-    marginBottom: 8,
+    marginTop: 4,
   },
   elementChip: {
-    alignSelf: 'flex-start',
+    marginTop: 8,
   },
   elementChipText: {
     color: 'white',
     fontSize: 12,
-    fontWeight: '600',
   },
   divider: {
-    marginVertical: 16,
     backgroundColor: 'rgba(229, 229, 231, 0.1)',
+    marginVertical: 16,
   },
   moodContainer: {
-    alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: 16,
   },
   moodLabel: {
     fontSize: 12,
@@ -239,14 +244,13 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   moodText: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#E5E5E7',
+    fontSize: 16,
+    color: 'rgba(229, 229, 231, 0.9)',
   },
   listsContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 20,
+    marginBottom: 16,
   },
   listColumn: {
     flex: 1,
@@ -254,48 +258,43 @@ const styles = StyleSheet.create({
   listTitle: {
     fontSize: 14,
     fontWeight: '600',
+    color: 'rgba(229, 229, 231, 0.9)',
     marginBottom: 8,
-    color: '#A78BFA',
   },
   listItem: {
     marginBottom: 4,
   },
   listItemText: {
     fontSize: 13,
-    color: 'rgba(229, 229, 231, 0.7)',
+    color: 'rgba(229, 229, 231, 0.9)',
   },
   nextChangeContainer: {
-    backgroundColor: 'rgba(139, 92, 246, 0.1)',
-    padding: 16,
-    borderRadius: 12,
-    alignItems: 'center',
+    backgroundColor: 'rgba(229, 229, 231, 0.05)',
+    padding: 12,
+    borderRadius: 8,
     marginBottom: 16,
-    borderWidth: 1,
-    borderColor: 'rgba(139, 92, 246, 0.2)',
   },
   nextChangeLabel: {
     fontSize: 12,
     color: 'rgba(229, 229, 231, 0.6)',
-    marginBottom: 4,
   },
   nextChangeTime: {
-    fontSize: 20,
-    fontWeight: '700',
-    color: '#8B5CF6',
-    marginBottom: 4,
+    fontSize: 16,
+    fontWeight: '600',
+    color: 'rgba(229, 229, 231, 0.9)',
+    marginTop: 4,
   },
   nextChangeDate: {
     fontSize: 12,
     color: 'rgba(229, 229, 231, 0.6)',
+    marginTop: 2,
   },
   tipContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(139, 92, 246, 0.05)',
+    backgroundColor: 'rgba(229, 229, 231, 0.05)',
     padding: 12,
     borderRadius: 8,
-    borderWidth: 1,
-    borderColor: 'rgba(139, 92, 246, 0.1)',
   },
   tipEmoji: {
     fontSize: 20,
@@ -303,8 +302,7 @@ const styles = StyleSheet.create({
   },
   tipText: {
     flex: 1,
-    fontSize: 12,
-    color: 'rgba(229, 229, 231, 0.6)',
-    lineHeight: 16,
+    fontSize: 13,
+    color: 'rgba(229, 229, 231, 0.8)',
   },
 }); 

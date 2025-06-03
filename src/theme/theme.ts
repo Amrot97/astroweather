@@ -97,4 +97,16 @@ export const zodiacColors = {
   capricorn: '#6B7280',
   aquarius: '#06B6D4',
   pisces: '#8B5CF6',
+};
+
+export const theme = {
+  ...MD3DarkTheme,
+  colors: {
+    ...MD3DarkTheme.colors,
+    primary: '#6B4EFF',
+    secondary: '#4B2EFF',
+    background: '#0F0F1E',
+    surface: '#1F1F33',
+    text: '#FFFFFF',
+  },
 }; 

@@ -14,6 +14,9 @@ export interface MoonData {
   phase: string;
   phaseEmoji: string;
   mood: string;
+  emotionalWeather: string;
+  position: string;
+  bestActivities: string;
   goodFor: string[];
   avoid: string[];
   nextSignChange: Date;
@@ -106,6 +109,9 @@ export const generateMoonData = (): MoonData => {
       sign: 'Gemini',
       element: 'Air',
       mood: 'Chatty & Curious',
+      emotionalWeather: 'Light and breezy, perfect for social interactions and intellectual pursuits.',
+      position: 'In the 3rd House of Communication',
+      bestActivities: 'Networking, learning, and sharing ideas',
       goodFor: ['Communication', 'Learning', 'Short trips', 'Social media'],
       avoid: ['Deep emotional talks', 'Major commitments', 'Routine tasks'],
     },
@@ -113,6 +119,9 @@ export const generateMoonData = (): MoonData => {
       sign: 'Cancer',
       element: 'Water',
       mood: 'Nurturing & Sensitive',
+      emotionalWeather: 'Deep and intuitive, ideal for emotional connections and self-reflection.',
+      position: 'In the 4th House of Home',
+      bestActivities: 'Family time, cooking, and self-care',
       goodFor: ['Home activities', 'Family time', 'Cooking', 'Self-care'],
       avoid: ['Harsh criticism', 'Public speaking', 'Risk-taking'],
     },
@@ -120,6 +129,9 @@ export const generateMoonData = (): MoonData => {
       sign: 'Leo',
       element: 'Fire',
       mood: 'Confident & Creative',
+      emotionalWeather: 'Warm and vibrant, perfect for creative expression and leadership.',
+      position: 'In the 5th House of Creativity',
+      bestActivities: 'Creative projects, romance, and entertainment',
       goodFor: ['Creative projects', 'Romance', 'Leadership', 'Entertainment'],
       avoid: ['Being ignored', 'Mundane tasks', 'Criticism'],
     },
@@ -127,6 +139,9 @@ export const generateMoonData = (): MoonData => {
       sign: 'Virgo',
       element: 'Earth',
       mood: 'Organized & Practical',
+      emotionalWeather: 'Clear and focused, ideal for detailed work and health routines.',
+      position: 'In the 6th House of Health',
+      bestActivities: 'Planning, organizing, and health routines',
       goodFor: ['Planning', 'Health routines', 'Work tasks', 'Cleaning'],
       avoid: ['Chaos', 'Spontaneity', 'Messy situations'],
     },

@@ -1,16 +1,17 @@
 import React, { useRef } from 'react';
-import { View, StyleSheet, ScrollView, Animated, Dimensions, Platform } from 'react-native';
+import { View, StyleSheet, ScrollView, Animated, Dimensions, Platform, TouchableOpacity } from 'react-native';
 import { Card, Text, useTheme, IconButton, Surface, MD3Theme } from 'react-native-paper';
 import { TransitAlert } from '../data/mockData';
 import * as Haptics from 'expo-haptics';
 
 interface Props {
   data: TransitAlert[];
+  onPress?: () => void;
 }
 
 const { width } = Dimensions.get('window');
 
-export const TransitAlerts: React.FC<Props> = ({ data }) => {
+export const TransitAlerts: React.FC<Props> = ({ data, onPress }) => {
   const theme = useTheme();
   const styles = dynamicStyles(theme);
   const scrollX = useRef(new Animated.Value(0)).current;
@@ -41,13 +42,16 @@ export const TransitAlerts: React.FC<Props> = ({ data }) => {
     }
   };
 
-  const handleAlertPress = () => {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+  const handlePress = () => {
+    if (onPress) {
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+      onPress();
+    }
   };
 
   return (
-    <View style={styles.container}>
-      <Card style={styles.card} mode="elevated" elevation={1}>
+    <TouchableOpacity onPress={handlePress} activeOpacity={0.9}>
+      <Card style={styles.container}>
         <Card.Content style={{ paddingHorizontal: 0 }}>
           <View style={styles.header}>
             <Text style={styles.title}>TODAY'S COSMIC HIGHLIGHTS</Text>
@@ -72,7 +76,6 @@ export const TransitAlerts: React.FC<Props> = ({ data }) => {
                   { borderColor: getImpactColor(alert.impact) },
                 ]}
                 elevation={2}
-                onTouchEnd={handleAlertPress}
               >
                 <View style={styles.alertHeader}>
                   <Text style={styles.alertEmoji}>{alert.emoji}</Text>
@@ -187,7 +190,7 @@ export const TransitAlerts: React.FC<Props> = ({ data }) => {
           </View>
         </Card.Content>
       </Card>
-    </View>
+    </TouchableOpacity>
   );
 };
 

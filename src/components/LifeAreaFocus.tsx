@@ -1,24 +1,33 @@
 import React from 'react';
-import { View, StyleSheet, ScrollView, Dimensions } from 'react-native';
+import { View, StyleSheet, ScrollView, Dimensions, TouchableOpacity } from 'react-native';
 import { Card, Text, Surface, useTheme, Chip, IconButton } from 'react-native-paper';
 import { LifeAreaFocus as LifeAreaFocusType } from '../data/mockData';
 import { planetColors } from '../theme/theme';
+import * as Haptics from 'expo-haptics';
 
 interface Props {
   data: LifeAreaFocusType[];
+  onPress?: () => void;
 }
 
 const { width } = Dimensions.get('window');
 
-export const LifeAreaFocus: React.FC<Props> = ({ data }) => {
+export const LifeAreaFocus: React.FC<Props> = ({ data, onPress }) => {
   const theme = useTheme();
 
   const getPlanetColor = (planet: string) => {
     return (planetColors as any)[planet.toLowerCase()] || theme.colors.primary;
   };
 
+  const handlePress = () => {
+    if (onPress) {
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+      onPress();
+    }
+  };
+
   return (
-    <View style={styles.container}>
+    <TouchableOpacity onPress={handlePress} activeOpacity={0.9}>
       <Card style={styles.card} mode="elevated" elevation={1}>
         <Card.Content style={styles.cardContent}>
           <View style={styles.header}>
@@ -121,19 +130,16 @@ export const LifeAreaFocus: React.FC<Props> = ({ data }) => {
           )}
         </Card.Content>
       </Card>
-    </View>
+    </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    marginHorizontal: 16,
-    marginVertical: 8,
-  },
   card: {
     backgroundColor: '#1F1F33',
     borderRadius: 16,
-    overflow: 'hidden',
+    marginHorizontal: 16,
+    marginVertical: 8,
   },
   cardContent: {
     paddingHorizontal: 16,
