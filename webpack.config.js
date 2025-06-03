@@ -50,8 +50,13 @@ module.exports = async function (env, argv) {
   // Enable source maps for debugging
   config.devtool = 'source-map';
 
-  // Ensure proper public path
-  config.output.publicPath = '/';
+  // Ensure proper public path and output settings
+  config.output = {
+    ...config.output,
+    publicPath: '/',
+    filename: 'static/js/[name].[contenthash:8].js',
+    chunkFilename: 'static/js/[name].[contenthash:8].chunk.js',
+  };
 
   return config;
 }; 
