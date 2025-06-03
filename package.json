@@ -15,11 +15,15 @@
     "@react-navigation/native": "^6.1.9",
     "@react-navigation/native-stack": "^6.9.17",
     "@react-navigation/stack": "^6.3.20",
+    "buffer": "^6.0.3",
+    "crypto-browserify": "^3.12.0",
     "date-fns": "^2.30.0",
     "expo": "~50.0.6",
     "expo-haptics": "~12.8.1",
     "expo-linear-gradient": "~12.7.1",
     "expo-status-bar": "~1.11.1",
+    "os-browserify": "^0.3.0",
+    "path-browserify": "^1.0.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-native": "0.73.4",
@@ -30,7 +34,8 @@
     "react-native-screens": "~3.29.0",
     "react-native-svg": "14.1.0",
     "react-native-vector-icons": "^10.0.3",
-    "react-native-web": "~0.19.6"
+    "react-native-web": "~0.19.6",
+    "stream-browserify": "^3.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
