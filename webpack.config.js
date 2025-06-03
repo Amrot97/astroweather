@@ -47,6 +47,11 @@ module.exports = async function (env, argv) {
     })
   );
 
-  // Customize the config as needed
+  // Enable source maps for debugging
+  config.devtool = 'source-map';
+
+  // Ensure proper public path
+  config.output.publicPath = '/';
+
   return config;
 }; 
